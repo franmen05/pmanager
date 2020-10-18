@@ -1,0 +1,86 @@
+
+/**
+ * Task entity.
+ * @author The JHipster team.
+ */
+ 
+enum ResquestStatus {
+    SUBMIT, CANCELLED, ENROLL_PROCESS, PROCESS, FINSHED
+}
+
+/**
+ * The Patient entity.
+ */
+entity Patient {
+
+    
+	/**
+	* The firstname attribute.
+	*/
+	firstName String required
+	lastName String  required
+	email String unique
+    reEnrollment Boolean 
+	phoneNumber String
+    whatsapp String
+    cellNumber String
+    emergencyNumber String
+    address String required
+	birthDate Instant
+	createDate Instant  
+    createDate Instant  required
+    status ResquestStatus required
+}
+
+entity Record{
+  description String required 
+  createDate Instant
+  lastUpdateDate Instant required
+
+}
+
+/**
+ * The Student entity.
+ */
+entity Prescription {
+	
+	description String required 
+	createDate Instant
+  	lastUpdateDate Instant required
+}
+
+entity Turn {
+	
+	position Integer required 
+	createDate Instant
+  	lastUpdateDate Instant required
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+
+	Patient{record} to Record
+    Patient{turn} to Turn
+    
+    Record{presciption} to Prescription
+}
+
+relationship ManyToOne {
+	Record{patient} to Patient
+    Turn{patient} to Patient
+}
+
+// Set pagination options
+paginate RegisterRequest with pagination
+// paginate JobHistory, Employee with infinite-scroll
+// paginate Job with pagination
+
+// Use Data Transfert Objects (DTO)
+dto RegisterRequest with mapstruct
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
